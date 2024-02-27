@@ -5,5 +5,5 @@ apt install -y nginx
 ufw allow 'Nginx HTTP'
 echo 'Hello World!' > /var/www/html/index.nginx-debian.html
 service nginx start
-sudo sed -i '/^}/i \    location \/redirect_me {\n        return 301 https:\/\/www.example.com\/new_page;\n    }\n' /etc/nginx/sites-available/default
+sed -i '/^}/i \    location \/redirect_me {\n        return 301 https:\/\/www.example.com\/new_page;\n    }\n' /etc/nginx/sites-available/default
 service nginx restart
