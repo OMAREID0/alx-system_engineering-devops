@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Bash script that transfers a file from our client to a server
+
+apt install -y nginx
+ufw allow 'Nginx HTTP'
+echo 'Hello World!' > /var/www/html/index.nginx-debian.html
+service nginx start
+tee /etc/nginx/sites-available/redirect_me <<EOF
+server {
+    listen 80;
+    server_name _;
+
+    location /redirect_me {
+        return 301 https://www.example.com/new_page;
+    }
+
+    # Redirect all other requests to the main server
+    location / {
+        return 301 https://\$host\$request_uri;
+    }
+}
+EOF
+ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
+service nginx restart
